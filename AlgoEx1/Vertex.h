@@ -1,7 +1,9 @@
 #pragma once
-#include "Edge.h"
+#include "DirectedEdge.h"
+#include "UnDirectedEdge.h"
 #include <list>
-
+#define DIRECTED_EDGE 1
+#define UNDIRECTED_EDGE 2
 using namespace std;
 
 class Vertex
@@ -13,11 +15,12 @@ private:
 
 public:
 	Vertex(int id):id(id){}
-	Vertex(const Vertex& other)=delete;
 	~Vertex();
-	void AddEdge(int vertex);
+	void AddEdge(int vertex,int type);
 	void posToNextUnMarked();
 	bool checkPosAtEnd();
 	bool isPosAtEnd();
-	int getId() { return id; }
+	int getId();
+	friend class DirectedGraph;
+	friend class UnDirectedGraph;
 };	
