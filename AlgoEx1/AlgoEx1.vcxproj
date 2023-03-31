@@ -148,7 +148,6 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirectedEdge.cpp" />
     <ClCompile Include="DirectedGraph.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="UnDirectedEdge.cpp" />
