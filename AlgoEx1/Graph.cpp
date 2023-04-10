@@ -22,7 +22,7 @@ void Graph::Euler()
 		while (itrCurrentVerCircle != itrEndCircle)
 		{
 			list <int> TempCircle= findCircuit(*itrCurrentVerCircle);
-			TempCircle.pop_front();
+			TempCircle.pop_back();
 			Circle.splice(itrCurrentVerCircle, TempCircle);
 			itrEndCircle = Circle.end();
 			if((vertices[*itrCurrentVerCircle].checkPosAtEnd()))
