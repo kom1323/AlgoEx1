@@ -1,6 +1,6 @@
 #include "DirectedGraph.h"
 
-DirectedGraph::DirectedGraph() :Graph()
+DirectedGraph::DirectedGraph(int numOfVertices) :Graph(numOfVertices)
 {
 	this->ColorArray = nullptr;
 }
@@ -15,29 +15,26 @@ void DirectedGraph::addEdge(int vertex1, int vertex2)
 }
 bool DirectedGraph::checkDegrees()
 {
-	int* indegree = new int[counter];
-	int* outdegree = new int[counter];
-	for (int i = 0; i < counter; i++)
+	int* indegree = new int[vertices.size()];
+	int* outdegree = new int[vertices.size()];
+	for (int i = 0; i < vertices.size(); i++)
 	{
 		indegree[i] = 0;
 		outdegree[i] = 0;
 	}
-	vector<Vertex>::iterator itrVertex = vertices.begin();
-	vector<Vertex>::iterator itrVertexEnd = vertices.begin();
-	for (int i = 0; itrVertex != itrVertexEnd; ++itrVertex)
+
+	for (int i =1; i<vertices.size(); i++)
 	{
-		list<Edge*>::iterator itrEdge = itrVertex->Edges.begin();
-		list<Edge*>::iterator itrEdgeEnd = itrVertex->Edges.end();
-		for (int j = 0; itrEdge != itrEdgeEnd; ++itrEdge)
+		list<Edge*>::iterator itrEdge = vertices[i].Edges.begin();
+		list<Edge*>::iterator itrEdgeEnd = vertices[i].Edges.end();
+		for (; itrEdge != itrEdgeEnd; ++itrEdge)
 		{
-			outdegree[i];
+			outdegree[i]++;
 			indegree[(*itrEdge)->getEdge()]++;
-			j++;
 		}
-		i++;
 	}
 	bool EQUAL = true;
-	for (int i = 0; i < counter && EQUAL; i++)
+	for (int i = 0; i <vertices.size() && EQUAL; i++)
 	{
 		if (indegree[i] != outdegree[i])
 			EQUAL = false;
@@ -48,27 +45,20 @@ bool DirectedGraph::checkDegrees()
 }
 void DirectedGraph::BuildTranspose(DirectedGraph& output)
 {
-	int numOfvertices = counter;
-	counter = 0;
-	for (int i = 0; i < numOfvertices; i++)
-		output.addVertx();
-	vector<Vertex>::iterator itrVertex = vertices.begin();
-	vector<Vertex>::iterator itrVertexEnd = vertices.begin();
-	for (int i = 0; itrVertex != itrVertexEnd; ++itrVertex)
+	int numOfvertices = vertices.size();
+	for (int i = 0; i< vertices.size(); i++)
 	{
-		list<Edge*>::iterator itrEdge = itrVertex->Edges.begin();
-		list<Edge*>::iterator itrEdgeEnd = itrVertex->Edges.end();
-		for (int j = 0; itrEdge != itrEdgeEnd; ++itrEdge)
+		list<Edge*>::iterator itrEdge = vertices[i].Edges.begin();
+		list<Edge*>::iterator itrEdgeEnd = vertices[i].Edges.end();
+		for (; itrEdge != itrEdgeEnd; ++itrEdge)
 		{
 			output.addEdge((*itrEdge)->getEdge(), i);
-			j++;
 		}
-		i++;
 	}
 }
 bool DirectedGraph::isConnected()
 {
-	DirectedGraph transposeGraph;
+	DirectedGraph transposeGraph(vertices.size());
 	vector<int> EndList;
 	BuildTranspose(transposeGraph);
 	DFS_Return_EndList(EndList);
@@ -77,45 +67,43 @@ bool DirectedGraph::isConnected()
 }
 void DirectedGraph::DFS_Return_EndList(vector<int>& EndList)
 {
-	this->ColorArray = new int[counter];
-	for (int i = 0; i < counter; i++)
+	this->ColorArray = new int[vertices.size()];
+	for (int i = 0; i < vertices.size(); i++)
 		ColorArray[i] = WHITE;
-	vector<Vertex>::iterator itrVertex = vertices.begin();
-	vector<Vertex>::iterator itrVertexEnd = vertices.begin();
-	for (; itrVertex != itrVertexEnd; ++itrVertex)
+	for (int i = 1; i < vertices.size(); i++)
 	{
-		if (ColorArray[itrVertex->getId()-1] == WHITE)
-			Visit_DFS__Return_EndList(itrVertex->getId(), EndList);
+		if (ColorArray[i] == WHITE)
+			Visit_DFS__Return_EndList(i, EndList);
 	}
 }
 void DirectedGraph::Visit_DFS__Return_EndList(int id, vector<int>& EndList)
 {
-	this->ColorArray[id - 1] = GRAY;
+	this->ColorArray[id] = GRAY;
 	vector<Vertex>::iterator itrVertex = vertices.begin();
-	list<Edge*>::iterator itrEdge = (itrVertex + id - 1)->Edges.begin();
-	list<Edge*>::iterator itrEdgeEnd = (itrVertex + id - 1)->Edges.end();
+	list<Edge*>::iterator itrEdge = (itrVertex + id )->Edges.begin();
+	list<Edge*>::iterator itrEdgeEnd = (itrVertex + id )->Edges.end();
 	for (; itrEdge != itrEdgeEnd; ++itrEdge)
 	{
-		if (ColorArray[(*itrEdge)->getEdge()-1] == WHITE)
+		if (ColorArray[(*itrEdge)->getEdge()] == WHITE)
 			Visit_DFS__Return_EndList((*itrEdge)->getEdge(), EndList);
 	}
-	this->ColorArray[id - 1] = BLACK;
-	EndList.push_back(id - 1);
+	this->ColorArray[id] = BLACK;
+	EndList.push_back(id);
 }
 int DirectedGraph::DFS_USE_MainLoop(vector<int>& MainLoop)
 {
 	int Use_Vist_Func = 0;
-	this->ColorArray = new int[counter];
-	for (int i = 0; i < counter; i++)
+	this->ColorArray = new int[vertices.size()];
+	for (int i = 0; i < vertices.size(); i++)
 		ColorArray[i] = WHITE;
-	vector<int>::iterator itrLoop = MainLoop.end();
+	vector<int>::iterator itrLoop = MainLoop.end()-1;
 	vector<int>::iterator itrLoopEnd = MainLoop.begin();
 	for (; itrLoop != itrLoopEnd; --itrLoop)
 	{
-		if (ColorArray[(*itrLoop)-1] == WHITE)
+		if (ColorArray[(*itrLoop)] == WHITE)
 		{
 			++Use_Vist_Func;
-			Visit_DFS__Use_MainLoop((*itrLoop) - 1);
+			Visit_DFS__Use_MainLoop((*itrLoop));
 		}	
 	}
 	return Use_Vist_Func;
@@ -124,34 +112,33 @@ void DirectedGraph::Visit_DFS__Use_MainLoop(int id)
 {
 	this->ColorArray[id - 1] = GRAY;
 	vector<Vertex>::iterator itrVertex = vertices.begin();
-	list<Edge*>::iterator itrEdge = (itrVertex + id - 1)->Edges.begin();
-	list<Edge*>::iterator itrEdgeEnd = (itrVertex + id - 1)->Edges.end();
+	list<Edge*>::iterator itrEdge = (itrVertex + id)->Edges.begin();
+	list<Edge*>::iterator itrEdgeEnd = (itrVertex + id)->Edges.end();
 	for (; itrEdge != itrEdgeEnd; ++itrEdge)
 	{
-		if (ColorArray[(*itrEdge)->getEdge() - 1] == WHITE)
+		if (ColorArray[(*itrEdge)->getEdge()] == WHITE)
 			Visit_DFS__Use_MainLoop((*itrEdge)->getEdge());
 	}
-	this->ColorArray[id - 1] = BLACK;
+	this->ColorArray[id] = BLACK;
 }
 bool DirectedGraph::isEulerGraph()
 {
-	if (counter <= 2)
+	if (vertices.size() <= 3)//****************************************
 		return false;
 	return (checkDegrees() && isConnected());
 }
-list<int> DirectedGraph::findCircuit(Vertex& vertex)
+list<int> DirectedGraph::findCircuit(int vertex)
 {
-	vector<Vertex>::iterator itrVertex = vertices.begin();
-	int currentVertex = vertex.getId();
+	int currentVertex = vertex;
 	int nextVertex;
 	list<int> Circuit;
 	Circuit.push_back(currentVertex);
-	do
+	while(!vertices[currentVertex].checkPosAtEnd())
 	{
-		nextVertex = (*((itrVertex + currentVertex - 1)->pos))->getEdge();
-		++(*((itrVertex + currentVertex - 1)->pos));
+		nextVertex = (*(vertices[currentVertex].pos))->getEdge();
+		++((vertices[currentVertex].pos));
 		Circuit.push_back(nextVertex);
 		currentVertex = nextVertex;
-	} while (!(itrVertex + currentVertex - 1)->isPosAtEnd());
+	} 
 	return Circuit;
 }

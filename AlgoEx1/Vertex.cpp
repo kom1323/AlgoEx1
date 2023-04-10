@@ -13,7 +13,7 @@ void Vertex::AddEdge(int vertex,int type)
 		break;
 	}
 	Edges.push_back(newEdge);
-	if (this->Edges.empty())
+	if (this->Edges.size()==1)
 		this->pos = this->Edges.begin();
 }
 void Vertex::posToNextUnMarked()//need to implement

@@ -5,13 +5,13 @@ class DirectedGraph : public Graph
 private:
 	int* ColorArray;
 public:
-	DirectedGraph();
+	DirectedGraph(int numOfVertices);
 	~DirectedGraph();
 	virtual void addEdge(int vertex1, int vertex2)override;
 	virtual bool checkDegrees()override;
 	virtual bool isConnected()override;
 	virtual bool isEulerGraph()override;
-	virtual list<int> findCircuit(Vertex& vertex) override;
+	virtual list<int> findCircuit(int vertex) override;
 	void BuildTranspose(DirectedGraph& output);
 	void DFS_Return_EndList(vector<int>& EndList);
 	int DFS_USE_MainLoop(vector<int>& MainLoop);

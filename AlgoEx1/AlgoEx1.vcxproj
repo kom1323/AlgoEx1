@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="DirectedGraph.cpp" />
     <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="UnDirectedEdge.cpp" />
     <ClCompile Include="UnDirectedGraph.cpp" />
     <ClCompile Include="Vertex.cpp" />

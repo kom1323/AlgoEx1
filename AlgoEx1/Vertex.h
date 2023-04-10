@@ -19,7 +19,6 @@ public:
 	void AddEdge(int vertex,int type);
 	void posToNextUnMarked();
 	bool checkPosAtEnd();
-	bool isPosAtEnd();
 	int getId();
 	friend class DirectedGraph;
 	friend class UnDirectedGraph;
