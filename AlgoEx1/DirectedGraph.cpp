@@ -123,7 +123,7 @@ void DirectedGraph::Visit_DFS__Use_MainLoop(int id)
 }
 bool DirectedGraph::isEulerGraph()
 {
-	if (vertices.size() <= 3)//****************************************
+	if (vertices.size() <= 2)//****************************************
 		return false;
 	return (checkDegrees() && isConnected());
 }
